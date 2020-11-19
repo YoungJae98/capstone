@@ -15,6 +15,7 @@ import {
   ViroNode,
   ViroAnimations,
 } from '@akadrimer/react-viro'
+import storage from '@react-native-firebase/storage'
 
 export default class HelloWorldSceneAR extends Component {
   constructor() {
@@ -23,10 +24,12 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR...',
+      imageUrl: 'imageUrl',
     }
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this)
+    this.getUrlAndCM()
   }
 
   render() {
@@ -38,6 +41,16 @@ export default class HelloWorldSceneAR extends Component {
           position={[0, 0, -1]}
           style={styles.helloWorldTextStyle}
         />
+        <ViroARPlaneSelector>
+          <Viro3DObject
+            source={require('./res/wolves/Wolves.obj')}
+            materials={['wolf']}
+            position={[-0.0, -0.0, -0.0]}
+            animation={{ name: 'rotate', run: true, loop: true }}
+            scale={[0.1, 0.1, 0.1]}
+            type="OBJ"
+          />
+        </ViroARPlaneSelector>
       </ViroARScene>
     )
   }
@@ -50,6 +63,27 @@ export default class HelloWorldSceneAR extends Component {
     } else if (state == ViroConstants.TRACKING_NONE) {
       // Handle loss of tracking
     }
+  }
+
+  async getUrlAndCM() {
+    const url = await storage().ref('Wolves_BaseColor.png').getDownloadURL()
+
+    ViroMaterials.createMaterials({
+      wolf: {
+        diffuseTexture: {
+          uri: url,
+        },
+      },
+    })
+
+    ViroAnimations.registerAnimations({
+      rotate: {
+        properties: {
+          rotateY: '+=90',
+        },
+        duration: 1000, //.25 seconds..
+      },
+    })
   }
 }
 
