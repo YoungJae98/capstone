@@ -70,7 +70,7 @@ export default function EmailInput() {
                 letterSpacing: 0.5 * size.widthRate,
                 color: color.text.primary1,
               }}
-              placeholder={'이메일'}
+              placeholder={'이메일 입력'}
               onChangeText={(text) => setEmailAdressInput(text)}
               value={emailAdressInput}
               keyboardType={'email-address'}
@@ -97,7 +97,7 @@ export default function EmailInput() {
                 letterSpacing: 0.5 * size.widthRate,
                 color: color.text.primary1,
               }}
-              placeholder={'비밀번호'}
+              placeholder={'비밀번호 입력'}
               onChangeText={(text) => setPasswordInput(text)}
               value={passwordInput}
               keyboardType={'email-address'}
