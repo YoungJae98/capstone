@@ -25,6 +25,7 @@ export default class HelloWorldSceneAR extends Component {
     this.state = {
       text: 'Initializing AR...',
       imageUrl: 'imageUrl',
+      object: <></>,
     }
 
     // bind 'this' to functions
@@ -45,11 +46,37 @@ export default class HelloWorldSceneAR extends Component {
           <Viro3DObject
             source={require('./res/wolves/Wolves.obj')}
             materials={['wolf']}
-            position={[-0.0, -0.0, -0.0]}
-            animation={{ name: 'rotate', run: true, loop: true }}
-            scale={[0.1, 0.1, 0.1]}
+            position={[-0.2, 0.0, -0.2]}
+            scale={[0.05, 0.05, 0.05]}
             type="OBJ"
+            onClick={() => {
+              console.log('1')
+            }}
           />
+          <Viro3DObject
+            source={require('./res/wolves/Wolves.obj')}
+            materials={['wolf']}
+            position={[0.2, 0.0, 0.2]}
+            scale={[0.05, 0.05, 0.05]}
+            type="OBJ"
+            onClick={() => {
+              this.setState({
+                object: (
+                  <Viro3DObject
+                    source={require('./res/wolves/Wolves.obj')}
+                    materials={['wolf']}
+                    position={[-0.2, 0.2, -0.2]}
+                    scale={[0.05, 0.05, 0.05]}
+                    type="OBJ"
+                    onClick={() => {
+                      console.log('1')
+                    }}
+                  />
+                ),
+              })
+            }}
+          />
+          {this.state.object}
         </ViroARPlaneSelector>
       </ViroARScene>
     )
