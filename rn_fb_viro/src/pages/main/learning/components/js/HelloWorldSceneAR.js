@@ -30,6 +30,21 @@ export default class HelloWorldSceneAR extends Component {
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this)
     this.getUrlAndCM()
+
+    ViroMaterials.createMaterials({
+      wolf: {
+        diffuseTexture: require('./res/wolves/Wolves_BaseColor.png'),
+      },
+    })
+
+    ViroAnimations.registerAnimations({
+      rotate: {
+        properties: {
+          rotateY: '+=90',
+        },
+        duration: 1000, //.25 seconds..
+      },
+    })
   }
 
   render() {
@@ -67,23 +82,6 @@ export default class HelloWorldSceneAR extends Component {
 
   async getUrlAndCM() {
     const url = await storage().ref('Wolves_BaseColor.png').getDownloadURL()
-
-    ViroMaterials.createMaterials({
-      wolf: {
-        diffuseTexture: {
-          uri: url,
-        },
-      },
-    })
-
-    ViroAnimations.registerAnimations({
-      rotate: {
-        properties: {
-          rotateY: '+=90',
-        },
-        duration: 1000, //.25 seconds..
-      },
-    })
   }
 }
 
