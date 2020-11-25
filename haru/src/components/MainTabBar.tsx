@@ -40,6 +40,15 @@ const QuizActive = (
   <Image source={require('icons/quizActive.png')} style={{ width: 30 * size.widthRate, height: 30 * size.widthRate }} />
 )
 
+const Today =(
+  
+              <Image
+                source={require('icons/todayLearningMini.png')}
+                style={{ width: 48 * size.widthRate, height: 48 * size.widthRate, right: 4 * size.widthRate }}
+              />
+)
+
+
 export default function MainTabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options
   const [inTodayLearning, setInTodayLearning] = useState(true)
@@ -65,6 +74,8 @@ export default function MainTabBar({ state, descriptors, navigation }) {
                 return isFocused ? QuizActive : Quiz
               case 'ReviewPage':
                 return isFocused ? ReviewActive : Review
+              case 'TodayPage':
+                return isFocused ? Today : Today
             }
           }
 
@@ -137,10 +148,12 @@ export default function MainTabBar({ state, descriptors, navigation }) {
                 height: 5,
               },
             }}
-            onPress={() => setInTodayLearning((prev) => !prev)}>
+            onPress={() => {setInTodayLearning((prev) => !prev)
+              console.log(state)
+            }}>
             {true ? (
               <Image
-                source={require('icons/todayLeaning.png')}
+                source={require('icons/todayLearning.png')}
                 style={{ width: 48 * size.widthRate, height: 48 * size.widthRate, right: -6 * size.widthRate }}
               />
             ) : (
@@ -156,6 +169,7 @@ export default function MainTabBar({ state, descriptors, navigation }) {
             )}
           </TouchableOpacity>
         </View>
+        
       </TabBar>
       {/* <TouchableOpacity
         style={{
