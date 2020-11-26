@@ -17,13 +17,14 @@ import {
 import { BorderlessButton } from 'react-native-gesture-handler'
 
 export default class QuizAR extends Component {
-  constructor() {
+  constructor(props) {
     super()
 
     // Set initial state here
     this.state = {
       text: '불러오는 중입니다',
       object: <></>,
+      isCorrect: false,
     }
 
     // bind 'this' to functions
@@ -32,6 +33,18 @@ export default class QuizAR extends Component {
     ViroMaterials.createMaterials({
       wolf: {
         diffuseTexture: require('objects3D/Wolves_BaseColor.png'),
+      },
+      bus: {
+        diffuseTexture: require('objects3D/Bus.png'),
+      },
+      airplane: {
+        diffuseTexture: require('objects3D/Airplane.png'),
+      },
+      bird: {
+        diffuseTexture: require('objects3D/Bird.png'),
+      },
+      dog: {
+        diffuseTexture: require('objects3D/Dog.png'),
       },
     })
 
@@ -62,31 +75,29 @@ export default class QuizAR extends Component {
           <Viro3DObject
             name="dog"
             source={require('objects3D/Dog.obj')}
-            position={[-0.4, -0.5, -1.5]}
+            materials={['dog']}
             scale={[0.01, 0.01, 0.01]}
+            position={[-0.4, -0.5, -1.5]}
             type="OBJ"
             animation={{ name: 'bounceRev', run: true, loop: true }}
             // dragType="FixedToWorld"
             // onDrag={() => {}}
             onClick={() => {
-              this.setState({
-                object: (
-                  <ViroImage
-                    height={0.8}
-                    width={0.8}
-                    position={[0, -0.0, -1.0]}
-                    rotation={[-6, 0, 0]}
-                    source={require('images/correct.png')}
-                  />
-                ),
-              })
+              this._isCorrect('개', this.props.sceneNavigator.viroAppProps.text)
               setTimeout(() => {
                 this.setState({
                   object: <></>,
                 })
+                if (this.state.isCorrect) {
+                  this.props.sceneNavigator.viroAppProps.func('비행기')
+                }
               }, 5000)
             }}
           />
+
+          {/* {console.log('the text is:')}
+          {console.log(this.props.sceneNavigator.viroAppProps)} */}
+
           <Viro3DObject
             name="wolf"
             source={require('objects3D/Wolves.obj')}
@@ -96,37 +107,36 @@ export default class QuizAR extends Component {
             scale={[0.08, 0.08, 0.08]}
             type="OBJ"
             onClick={() => {
-              this.setState({
-                object: (
-                  <ViroImage height={0.8} width={0.8} position={[0, -0.0, -1.0]} source={require('images/wrong.png')} />
-                ),
-              })
+              this._isCorrect('늑대', this.props.sceneNavigator.viroAppProps.text)
               setTimeout(() => {
                 this.setState({
                   object: <></>,
                 })
+                if (this.state.isCorrect) {
+                  this.props.sceneNavigator.viroAppProps.func('개')
+                }
               }, 5000)
             }}
           />
           <Viro3DObject
-            name="piano"
-            source={require('objects3D/Piano.obj')}
+            name="Airplane"
+            source={require('objects3D/Airplane.obj')}
+            materials={['airplane']}
             position={[0.6, -0.5, -1.5]}
-            scale={[0.0004, 0.0004, 0.0004]}
+            scale={[0.0005, 0.0005, 0.0005]}
             type="OBJ"
             animation={{ name: 'bounceRev', run: true, loop: true }}
             // dragType="FixedToWorld"
             // onDrag={() => {}}
             onClick={() => {
-              this.setState({
-                object: (
-                  <ViroImage height={0.8} width={0.8} position={[0, -0.0, -1.0]} source={require('images/wrong.png')} />
-                ),
-              })
+              this._isCorrect('비행기', this.props.sceneNavigator.viroAppProps.text)
               setTimeout(() => {
                 this.setState({
                   object: <></>,
                 })
+                if (this.state.isCorrect) {
+                  this.props.sceneNavigator.viroAppProps.func('늑대')
+                }
               }, 5000)
             }}
           />
@@ -143,6 +153,21 @@ export default class QuizAR extends Component {
       })
     } else if (state == ViroConstants.TRACKING_NONE) {
       // Handle loss of tracking
+    }
+  }
+  _isCorrect(word, text) {
+    if (word === text) {
+      this.setState({
+        object: (
+          <ViroImage height={0.8} width={0.8} position={[0, -0.0, -1.0]} source={require('images/correct.png')} />
+        ),
+        isCorrect: true,
+      })
+    } else {
+      this.setState({
+        object: <ViroImage height={0.8} width={0.8} position={[0, -0.0, -1.0]} source={require('images/wrong.png')} />,
+        isCorrect: false,
+      })
     }
   }
 }

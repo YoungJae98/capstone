@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { PhoneNumberInput, PhoneNumberAuth, NameInput, AgeInput } from 'pages'
+import { PhoneNumberInput, PhoneNumberAuth,  NameInput, AgeInput } from 'pages'
 import { Back } from 'icons'
 
 const Stack = createStackNavigator()
